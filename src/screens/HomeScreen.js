@@ -29,8 +29,8 @@ const HomeScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
-          <Text style={styles.editButtonText}>Edit</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Settleup')}>
+          <Text style={styles.editButtonText}>Settle up</Text>
         </TouchableOpacity>
       ),
     });

@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/HomeScreen'; // Adjusted import path
 import EditScreen from './src/screens/EditScreen'; // Adjusted import path
+import SettleupScreen from './src/screens/SettleupScreen'; // Adjusted import path
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Edit" component={EditScreen} />
+        <Stack.Screen name="Settleup" component={SettleupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
