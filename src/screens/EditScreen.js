@@ -1,33 +1,60 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SectionList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Mock data
-let nextId = 5;
+const loadPassengers = async () => {
+  try {
+    const passengersData = await AsyncStorage.getItem('passengers');
+    return passengersData !== null ? JSON.parse(passengersData) : [];
+  } catch (error) {
+    console.error('Error loading passengers:', error);
+  }
+};
+
+const savePassengers = async (passengers) => {
+  try {
+    await AsyncStorage.setItem('passengers', JSON.stringify(passengers));
+  } catch (error) {
+    console.error('Error saving passengers:', error);
+  }
+};
 
 const EditScreen = () => {
-  const [passengers, setPassengers] = useState([
-    { id: '1', name: 'Ron', onboard: true },
-    { id: '2', name: 'Iven', onboard: true },
-    { id: '3', name: 'Nori', onboard: true },
-    { id: '4', name: 'Alexander', onboard: true },
-  ]);
+  const [passengers, setPassengers] = useState([]);
   const [newPassengerName, setNewPassengerName] = useState('');
+
+  useEffect(() => {
+    loadPassengers().then(loadedPassengers => {
+      setPassengers(loadedPassengers);
+    });
+  }, []);
 
   const handleAddPress = () => {
     if (newPassengerName.trim()) {
-      const newPassenger = {
-        id: String(nextId++), // This is a simple auto-increment for example purposes
-        name: newPassengerName,
-        onboard: false,
-      };
-      setPassengers([...passengers, newPassenger]);
+      const newPassenger = { id: String(Date.now()), name: newPassengerName, onboard: false };
+      const updatedPassengers = [...passengers, newPassenger];
+      setPassengers(updatedPassengers);
       setNewPassengerName('');
+      savePassengers(updatedPassengers);
     }
   };
 
+  const handleRemovePress = (id) => {
+    const updatedPassengers = passengers.filter(p => p.id !== id);
+    setPassengers(updatedPassengers);
+    savePassengers(updatedPassengers);
+  };
+
+  const handleButtonPress = (item) => {
+    const updatedPassengers = passengers.map(p => 
+      p.id === item.id ? { ...p, onboard: !p.onboard } : p
+    );
+    setPassengers(updatedPassengers);
+    savePassengers(updatedPassengers);
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Edit Passenger Setup</Text>
+    <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -39,19 +66,34 @@ const EditScreen = () => {
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={passengers}
+      <SectionList
+        sections={[
+          { title: 'Passengers', data: passengers },
+        ]}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={[styles.passengerItem, { borderColor: item.onboard ? '#32CD32' : '#FFA500' }]}>
-            <Text style={styles.passengerName}>{item.name}</Text>
-            <TouchableOpacity style={styles.editButton}>
-              <Text style={styles.editButtonText}>✏️</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: item.onboard ? '#32CD32' : '#FFA500' }]}
+            onPress={() => handleButtonPress(item)}
+          >
+            <Text style={styles.text}>{item.name}</Text>
+            <Text style={styles.text}>{item.onboard ? 'Onboard' : 'Not Onboard'}</Text>
+            <Text style={styles.text}>{item.onboard ? 'Press to stop' : 'Press to start'}</Text>
+            <View style={styles.innerButtonContainer}>
+              <TouchableOpacity 
+                style={styles.removeButton} 
+                onPress={() => handleRemovePress(item.id)}
+              >
+                <Text style={styles.removeButtonText}>Remove</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.sectionHeader}>{title}</Text>
         )}
       />
-    </ScrollView>
+    </View>
   );
 };
 
@@ -59,12 +101,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    padding: 20,
-    textAlign: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -87,28 +123,40 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 24,
   },
-  passengerItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  button: {
     padding: 20,
-    borderWidth: 1,
+    marginVertical: 10,
+    width: '90%',
+    alignSelf: 'center',
     borderRadius: 10,
-    marginHorizontal: 20,
-    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: '#FFA500',
   },
-  passengerName: {
-    fontSize: 18,
+  text: {
+    color: '#000',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
-  editButton: {
-    backgroundColor: '#0000FF',
-    borderRadius: 20,
-    padding: 10,
+  innerButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 10,
   },
-  editButtonText: {
+  removeButton: {
+    backgroundColor: 'red',
+    borderRadius: 10,
+    padding: 5,
+    alignSelf: 'flex-end',
+  },
+  removeButtonText: {
     color: '#fff',
+    fontSize: 14,
+  },
+  sectionHeader: {
+    fontWeight: 'bold',
     fontSize: 18,
+    backgroundColor: '#ddd',
+    padding: 10,
   },
 });
 
