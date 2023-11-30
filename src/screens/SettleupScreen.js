@@ -1,32 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  SectionList,
-  Button,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const loadPassengers = async () => {
-  try {
-    const passengersData = await AsyncStorage.getItem('passengers');
-    return passengersData !== null ? JSON.parse(passengersData) : [];
-  } catch (error) {
-    console.error('Error loading passengers:', error);
-    return [];
-  }
-};
-
-const savePassengers = async (passengers) => {
-  try {
-    await AsyncStorage.setItem('passengers', JSON.stringify(passengers));
-  } catch (error) {
-    console.error('Error saving passengers:', error);
-  }
-};
 
 const SettleupScreen = () => {
   const [passengers, setPassengers] = useState([]);
@@ -34,33 +8,24 @@ const SettleupScreen = () => {
   const [newTotalMoney, setNewTotalMoney] = useState('');
 
   useEffect(() => {
-    // Load passengers and total money when the component mounts
-    loadPassengers().then((loadedPassengers) => {
-      setPassengers(loadedPassengers);
-    });
-
-    // Load the total money from AsyncStorage when the component mounts
-    const loadTotalMoney = async () => {
+    const loadData = async () => {
       try {
+        const passengersData = await AsyncStorage.getItem('passengers');
+        setPassengers(passengersData ? JSON.parse(passengersData) : []);
+
         const storedTotalMoney = await AsyncStorage.getItem('totalMoney');
-        if (storedTotalMoney !== null) {
+        if (storedTotalMoney) {
           setTotalMoney(parseFloat(storedTotalMoney));
         }
       } catch (error) {
-        console.error('Error loading total money:', error);
+        console.error('Error loading data:', error);
       }
     };
 
-    loadTotalMoney();
-
-    // Cleanup function for the first useEffect
-    return () => {
-      // You can perform cleanup here if needed
-    };
-  }, []); // Empty dependency array means this effect runs only once
+    loadData();
+  }, []);
 
   useEffect(() => {
-    // Update passenger allocated money based on onboard time
     const interval = setInterval(() => {
       setPassengers((currentPassengers) => {
         const totalOnboardTime = currentPassengers
@@ -78,38 +43,8 @@ const SettleupScreen = () => {
       });
     }, 1000);
 
-    // Cleanup function for the second useEffect
-    return () => {
-      clearInterval(interval);
-    };
-  }, [passengers, totalMoney]); // Include passengers and totalMoney in the dependency array
-
-  const handleRemovePress = (id) => {
-    const updatedPassengers = passengers.filter((p) => p.id !== id);
-    setPassengers(updatedPassengers);
-    savePassengers(updatedPassengers);
-  };
-
-  const handleButtonPress = (item) => {
-    const updatedPassengers = passengers.map((p) => {
-      if (p.id === item.id) {
-        if (p.onboard) {
-          return {
-            ...p,
-            onboard: false,
-            elapsedTime: new Date().getTime() - p.startTime,
-            startTime: null,
-            moneyToSpend: 0,
-          };
-        } else {
-          return { ...p, onboard: true, startTime: new Date().getTime(), elapsedTime: 0 };
-        }
-      }
-      return p;
-    });
-    setPassengers(updatedPassengers);
-    savePassengers(updatedPassengers);
-  };
+    return () => clearInterval(interval);
+  }, [totalMoney]);
 
   const handleInputChange = (text) => {
     setNewTotalMoney(text);
@@ -117,9 +52,7 @@ const SettleupScreen = () => {
 
   const handleUpdateTotalMoney = async () => {
     const newMoney = parseFloat(newTotalMoney);
-
     setTotalMoney(newMoney);
-
     try {
       await AsyncStorage.setItem('totalMoney', newMoney.toString());
     } catch (error) {
@@ -127,47 +60,44 @@ const SettleupScreen = () => {
     }
   };
 
+  const handleButtonPress = (id) => {
+    const updatedPassengers = passengers.map((p) => {
+      if (p.id === id) {
+        const onboardStatus = !p.onboard;
+        const startTime = onboardStatus ? new Date().getTime() : null;
+        return { ...p, onboard: onboardStatus, startTime: startTime, elapsedTime: 0 };
+      }
+      return p;
+    });
+    setPassengers(updatedPassengers);
+    AsyncStorage.setItem('passengers', JSON.stringify(updatedPassengers));
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.totalMoneyText}>Total Money: ${totalMoney}</Text>
+      <Text style={styles.totalMoneyText}>Total Money: ${totalMoney.toFixed(2)}</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter new total money"
-        onChangeText={handleInputChange}
         value={newTotalMoney}
+        onChangeText={handleInputChange}
         keyboardType="numeric"
       />
       <Button title="Update Total Money" onPress={handleUpdateTotalMoney} />
-      <SectionList
-        sections={[
-          { title: 'Passengers', data: passengers },
-        ]}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: item.onboard ? '#32CD32' : '#FFA500' }]}
-            onPress={() => handleButtonPress(item)}
-          >
-            <Text style={styles.text}>{item.name}</Text>
-            <Text style={styles.text}>
-              {item.onboard
-                ? `Onboard: ${item.elapsedTime / 1000} s, Money to Spend: $${item.moneyToSpend?.toFixed(2) || 'N/A'}`
-                : 'Not Onboard'}
-            </Text>
-            <View style={styles.innerButtonContainer}>
-              <TouchableOpacity
-                style={styles.removeButton}
-                onPress={() => handleRemovePress(item.id)}
-              >
-                <Text style={styles.removeButtonText}>Remove</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.sectionHeader}>{title}</Text>
-        )}
-      />
+      {passengers.map((passenger) => (
+        <TouchableOpacity
+          key={passenger.id}
+          style={[styles.button, { backgroundColor: passenger.onboard ? '#32CD32' : '#FFA500' }]}
+          onPress={() => handleButtonPress(passenger.id)}
+        >
+          <Text style={styles.text}>{passenger.name}</Text>
+          <Text style={styles.text}>
+            {passenger.onboard
+              ? `Onboard: ${passenger.elapsedTime / 1000} s, Money to Spend: $${passenger.moneyToSpend?.toFixed(2) || 'N/A'}`
+              : 'Not Onboard'}
+          </Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
@@ -203,27 +133,6 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  innerButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 10,
-  },
-  removeButton: {
-    backgroundColor: 'red',
-    borderRadius: 10,
-    padding: 5,
-    alignSelf: 'flex-end',
-  },
-  removeButtonText: {
-    color: '#fff',
-    fontSize: 14,
-  },
-  sectionHeader: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    backgroundColor: '#ddd',
-    padding: 10,
   },
 });
 
