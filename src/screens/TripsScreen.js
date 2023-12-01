@@ -12,14 +12,11 @@ const loadTrips = async () => {
   }
 };
 
-const saveTrip = async (newTrip) => {
+const saveTrips = async (trips) => {
   try {
-    const existingTrips = await loadTrips();
-    const updatedTrips = [...existingTrips, newTrip];
-    await AsyncStorage.setItem('trips', JSON.stringify(updatedTrips));
-    return updatedTrips;
+    await AsyncStorage.setItem('trips', JSON.stringify(trips));
   } catch (error) {
-    console.error('Error saving trip:', error);
+    console.error('Error saving trips:', error);
   }
 };
 
@@ -36,10 +33,16 @@ const TripsScreen = ({ route, navigation }) => {
       date: new Date().toISOString(),
       passengers: passengersFromHome
     };
-    const updatedTrips = await saveTrip(newTrip);
-    if (updatedTrips) {
-      setTrips(updatedTrips);
-    }
+    const updatedTrips = [...trips, newTrip];
+    await saveTrips(updatedTrips);
+    setTrips(updatedTrips);
+  };
+
+  const handleDeleteTrip = async (tripIndex) => {
+    const updatedTrips = [...trips];
+    updatedTrips.splice(tripIndex, 1); // Remove the trip at tripIndex
+    await saveTrips(updatedTrips);
+    setTrips(updatedTrips);
   };
 
   const handleTripSelect = (passengers) => {
@@ -53,9 +56,10 @@ const TripsScreen = ({ route, navigation }) => {
       </TouchableOpacity>
 
       <SectionList
-        sections={trips.map(trip => ({
+        sections={trips.map((trip, index) => ({
           title: `Trip on ${new Date(trip.date).toLocaleDateString()}`,
           data: trip.passengers,
+          index,
         }))}
         keyExtractor={(item, index) => item.id || index.toString()}
         renderItem={({ item }) => (
@@ -64,9 +68,14 @@ const TripsScreen = ({ route, navigation }) => {
           </View>
         )}
         renderSectionHeader={({ section }) => (
-          <TouchableOpacity onPress={() => handleTripSelect(section.data)}>
-            <Text style={styles.sectionHeader}>{section.title}</Text>
-          </TouchableOpacity>
+          <View style={styles.sectionHeaderContainer}>
+            <TouchableOpacity onPress={() => handleTripSelect(section.data)}>
+              <Text style={styles.sectionHeader}>{section.title}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDeleteTrip(section.index)} style={styles.deleteButton}>
+              <Text style={styles.deleteButtonText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
         )}
       />
     </View>
@@ -100,6 +109,11 @@ const styles = StyleSheet.create({
   passengerName: {
     fontSize: 16,
   },
+  sectionHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   sectionHeader: {
     fontWeight: 'bold',
     fontSize: 18,
@@ -107,6 +121,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     borderRadius: 5,
+    flex: 1,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  deleteButtonText: {
+    color: 'white',
   },
 });
 
