@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -23,7 +23,8 @@ const savePassengers = async (passengers) => {
 const HomeScreen = () => {
   const [passengers, setPassengers] = useState([]);
   const [newPassengerName, setNewPassengerName] = useState('');
-  const [totalMoney, setTotalMoney] = useState(100); // Total money to be spent by passengers
+  const [totalMoney, setTotalMoney] = useState(100);
+  const [moneyInput, setMoneyInput] = useState('');
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const route = useRoute();
@@ -48,7 +49,10 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (route.params?.passengersFromTrip) {
-      setPassengers(route.params.passengersFromTrip);
+      const newPassengers = route.params.passengersFromTrip;
+      const passengerNames = newPassengers.map(p => p.name).join(', ');
+      Alert.alert("Passengers from Trip", passengerNames, [{ text: "OK" }]);
+      setPassengers([...newPassengers]);
     }
   }, [route.params?.passengersFromTrip]);
 
@@ -62,7 +66,6 @@ const HomeScreen = () => {
         });
       });
     }, 1000);
-
     return () => clearInterval(interval);
   }, [totalMoney, passengers]);
 
@@ -111,6 +114,16 @@ const HomeScreen = () => {
 
     setPassengers(updatedPassengers);
     savePassengers(updatedPassengers);
+  };
+
+  const handleUpdateTotalMoney = () => {
+    const newTotalMoney = parseFloat(moneyInput);
+    if (!isNaN(newTotalMoney) && newTotalMoney > 0) {
+      setTotalMoney(newTotalMoney);
+      setMoneyInput('');
+    } else {
+      Alert.alert("Invalid Input", "Please enter a valid number for total money.");
+    }
   };
 
   const formatTimeElapsed = (time) => {
@@ -202,6 +215,20 @@ const HomeScreen = () => {
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setMoneyInput}
+          value={moneyInput}
+          placeholder="Set Total Money"
+          keyboardType="numeric"
+        />
+        <TouchableOpacity onPress={handleUpdateTotalMoney} style={styles.addButton}>
+          <Text style={styles.addButtonText}>Set</Text>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={passengers}
         ListHeaderComponent={<Text style={styles.listTitle}>Passengers</Text>}
