@@ -21,7 +21,7 @@ const savePassengers = async (passengers) => {
 };
 
 const HomeScreen = () => {
-  const [passengers, setPassengers] = useState([]);
+  var [passengers, setPassengers] = useState([]);
   const [newPassengerName, setNewPassengerName] = useState('');
   const [totalMoney, setTotalMoney] = useState(100);
   const [moneyInput, setMoneyInput] = useState('');
@@ -51,8 +51,16 @@ const HomeScreen = () => {
     if (route.params?.passengersFromTrip) {
       const newPassengers = route.params.passengersFromTrip;
       const passengerNames = newPassengers.map(p => p.name).join(', ');
-      Alert.alert("Passengers from Trip", passengerNames, [{ text: "OK" }]);
+      const passengerDetails = JSON.stringify(newPassengers, null, 2); // Convert object to a formatted string
+  
+      Alert.alert(
+        "Passengers from Trip",
+        `Names: ${passengerNames}\nDetails: ${passengerDetails}`, // Display names and details
+        [{ text: "OK", onPress: () => console.log('OK Pressed') }]
+      );
+  
       setPassengers([...newPassengers]);
+      savePassengers([...newPassengers]);
     }
   }, [route.params?.passengersFromTrip]);
 
