@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 
 const loadPassengers = async () => {
   try {
@@ -23,19 +23,20 @@ const savePassengers = async (passengers) => {
 const HomeScreen = () => {
   const [passengers, setPassengers] = useState([]);
   const [newPassengerName, setNewPassengerName] = useState('');
-  const [totalMoney, setTotalMoney] = useState(100);
+  const [totalMoney, setTotalMoney] = useState(100); // Total money to be spent by passengers
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const route = useRoute();
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate('Settleup')}>
-          <Text style={styles.editButtonText}>Settle up</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Trips', { passengers: passengers })}>
+          <Text style={styles.editButtonText}>Trips</Text>
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, passengers]);
 
   useEffect(() => {
     if (isFocused) {
@@ -44,6 +45,12 @@ const HomeScreen = () => {
       });
     }
   }, [isFocused]);
+
+  useEffect(() => {
+    if (route.params?.passengersFromTrip) {
+      setPassengers(route.params.passengersFromTrip);
+    }
+  }, [route.params?.passengersFromTrip]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -92,19 +99,16 @@ const HomeScreen = () => {
     const updatedPassengers = passengers.map(p => {
       if (p.id === passenger.id) {
         if (!p.onboard) {
-          // If the passenger is not onboard, mark them as onboard
-          // Keep the original startTime if the passenger was paused before
           const newStartTime = p.pausedTime ? p.startTime : new Date().getTime();
           return { ...p, onboard: true, startTime: newStartTime };
         } else {
-          // If the passenger is onboard, pause them and calculate pausedTime
           const pausedTime = (new Date().getTime() - p.startTime) + (p.pausedTime || 0);
           return { ...p, onboard: false, pausedTime };
         }
       }
       return p;
     });
-  
+
     setPassengers(updatedPassengers);
     savePassengers(updatedPassengers);
   };
