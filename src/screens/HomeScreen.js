@@ -91,7 +91,7 @@ const HomeScreen = () => {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: item.onboard ? '#32CD32' : '#FFA500' }]}
+            style={[styles.button, { backgroundColor: item.onboard ? '#32CD32' : '#ADD8E6' }]}
             onPress={() => handleButtonPress(item)}
           >
             <Text style={styles.text}>{item.name}</Text>
@@ -125,32 +125,37 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#000',
+    borderRadius: 15, // Rounded corners
+    borderWidth: 1,
+    borderColor: '#000', // Border color
     fontSize: 18,
+    color: '#000', // Text color
   },
   addButton: {
-    backgroundColor: '#0000FF',
+    backgroundColor: '#78C5EF',
     borderRadius: 20,
-    padding: 10,
+    padding: 15,
+    alignItems: 'center',
   },
   addButtonText: {
     color: '#fff',
-    fontSize: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   button: {
-    padding: 20,
+    padding: 15,
     marginVertical: 10,
     width: '90%',
     alignSelf: 'center',
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#FFA500',
+    borderColor: "black",
   },
   text: {
     color: '#000',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 16,
   },
   innerButtonContainer: {
     flexDirection: 'row',
@@ -160,7 +165,7 @@ const styles = StyleSheet.create({
   removeButton: {
     backgroundColor: 'red',
     borderRadius: 10,
-    padding: 5,
+    padding: 8,
     alignSelf: 'flex-end',
   },
   removeButtonText: {
@@ -171,14 +176,17 @@ const styles = StyleSheet.create({
     color: '#000',
     marginRight: 10,
     fontWeight: 'bold',
+    fontSize: 16,
   },
   listTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    padding: 10,
+    padding: 15,
     backgroundColor: '#ddd',
   },
 });
+
+
 
 export default HomeScreen;
