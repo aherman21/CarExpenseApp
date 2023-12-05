@@ -68,4 +68,28 @@ export const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#ddd',
   },
+  passengerButton: {
+    fontSize: 15,
+    padding: 10,
+    width: '90%',
+    marginVertical: 10,
+    alignSelf: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#FFA500'
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center', // This ensures vertical alignment
+    padding: 10, // Adjust the padding as needed
+  },
+  leftText: {
+    flex: 1,
+    textAlign: 'left', // Align text to the left
+  },
+  rightText: {
+    flex: 0,
+    textAlign: 'right', // Align text to the right
+  },
 });

@@ -246,7 +246,7 @@ const HomeScreen = () => {
             style={[styles.button, { backgroundColor: item.onboard ? '#32CD32' : '#FFA500' }]}
             onPress={() => handleButtonPress(item)}
           >
-            <Text style={styles.text}>{item.name}</Text>
+            <Text style={styles.text}>{item.name}   </Text>
             <Text style={styles.text}>
               Status: {item.onboard ? 'Onboard' : 'Paused'}
             </Text>
