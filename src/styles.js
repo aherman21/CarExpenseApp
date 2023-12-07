@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   removeButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#ccc',
     borderRadius: 10,
     padding: 5,
     alignSelf: 'flex-end',

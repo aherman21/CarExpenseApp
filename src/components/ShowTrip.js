@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text } from "react-native";
 import { styles } from "../styles";
 
+//this is shown on the modal when a trip is selected or finished
+
 const ShowTrip = ({ passengers }) => {
     console.log('passengerss:', passengers)
     return (
