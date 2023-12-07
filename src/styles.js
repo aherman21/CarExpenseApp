@@ -9,6 +9,10 @@ export const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     padding: 20,
+    alignItems: 'center', // Center items vertically
+    borderBottomWidth: 1, // Add a bottom border
+    borderColor: '#ccc', // Set border color
+    marginBottom: 10
   },
   input: {
     flex: 1,
@@ -19,10 +23,20 @@ export const styles = StyleSheet.create({
     fontSize: 18,
   },
   addButton: {
-    backgroundColor: '#abf500',
-    borderRadius: 20,
+    backgroundColor: '#007bff', // Change to the desired shade of blue
+    borderRadius: 20, // Adjust the value to control the roundness of the edges
     padding: 10,
+    width: "50%",
+    alignSelf: 'center',
+    marginBottom: 10
   },
+  
+  addButtonText: {
+    color: '#fff', // Set the text color to white
+    fontSize: 18, // Set the font size
+    textAlign: 'center', // Center the text horizontally within the button
+  },
+
   endButton: {
     backgroundColor: '#fef200',
     borderRadius: 20,
@@ -31,21 +45,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
+  },
 
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 24,
-  },
-  button: {
-    padding: 20,
-    marginVertical: 10,
-    width: '90%',
-    alignSelf: 'center',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#FFA500',
-  },
   text: {
     color: '#000',
     fontWeight: 'bold',
@@ -96,7 +97,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#FFA500'
+    borderColor: 'black'
   },
   passengerItem: {
     marginTop: 16,
@@ -118,11 +119,40 @@ export const styles = StyleSheet.create({
   modalView: {
     height: 300,
     width: 200,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 6,
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: 'auto',
     marginBottom: 'auto',
-    backgroundColor: 'grey'
+  },
+
+  closeButton: {
+    backgroundColor: '#007bff', // Change to the desired shade of blue
+    borderRadius: 20, // Adjust the value to control the roundness of the edges
+    padding: 10,
+    width: "50%",
+    alignSelf: 'center',
+    marginBottom: 10
+
+  },
+  closeButtonText:{
+    color: '#fff', // Set the text color to white'
+    textAlign: "center",
+  },
+  closeMainButton: {
+    backgroundColor: '#007bff', // Change to the desired shade of blue
+    borderRadius: 20, // Adjust the value to control the roundness of the edges
+    padding: 10,
+    width: "50%",
+    alignSelf: 'center',
+    marginBottom: 10
+
+  },
+  closeMainButtonText:{
+    color: '#fff', // Set the text color to white'
+    textAlign: "center",
   },
   tripItem: {
     padding: 15,

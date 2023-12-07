@@ -127,7 +127,10 @@ const MainScreen = () => {
         />
         </View>
       
-        <Button title="Add Passenger" onPress={addPassenger} style={styles.addButton} />
+        <TouchableOpacity onPress={addPassenger} style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add passenger</Text>
+        </TouchableOpacity>
+
         <Text style={styles.listTitle}>Total Money for current trip: {getTotalMoneySpent().toFixed(2)}</Text>
         <FlatList
             data={passengers}
@@ -147,8 +150,8 @@ const MainScreen = () => {
              onRequestClose={closeTripDetails}>
              <View style={styles.modalView}>
                 <ShowTrip passengers={passengers} />
-                <TouchableOpacity onPress={closeTripDetails}>
-                    <Text>Close</Text>
+                <TouchableOpacity onPress={closeTripDetails} style={styles.closeMainButton}>
+                    <Text style={styles.closeMainButtonText}>Close</Text>
                 </TouchableOpacity>
              </View>
             </Modal>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Text, TouchableOpacity, Modal, Button} from 'react-native'
+import { View, FlatList, Text, TouchableOpacity, Modal, Button, Alert} from 'react-native'
 import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
@@ -32,16 +32,33 @@ const TripsScreen = () => {
 
     const renderTripItem = ({ item, index }) => (
         <View style={styles.tripItem}>
-            <TouchableOpacity
-                onPress={() => openTripDetails(item)}
-            >
-                <Text style={styles.tripText}>Date: {formatDate(item.date)}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => removeTrip(index)} style={styles.removeButton}>
-                <Text>Delete</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => openTripDetails(item)}
+          >
+            <Text style={styles.tripText}>Date: {formatDate(item.date)}</Text>
+          </TouchableOpacity>
+      
+          <TouchableOpacity
+            onPress={() => showDeleteConfirmation(index)}
+            style={styles.removeButton}
+          >
+            <Text>Delete</Text>
+          </TouchableOpacity>
         </View>
-    )
+      );
+      
+      const showDeleteConfirmation = (index) => {
+        Alert.alert(
+          'Delete Trip',
+          'Are you sure you want to delete this trip?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Delete', onPress: () => removeTrip(index) },
+          ],
+          { cancelable: true }
+        );
+      };
+      
 
     const removeTrip = async (index) => {
         console.log('index:', index)
@@ -72,7 +89,7 @@ const TripsScreen = () => {
                 <View style={styles.modalView}>
                     {selectedTrip && <ShowTrip passengers={selectedTrip.passengers} />}
                     <TouchableOpacity onPress={closeTripDetails} style={styles.closeButton}>
-                        <Text>Close</Text>
+                        <Text  style={styles.closeButtonText}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
