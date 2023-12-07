@@ -6,7 +6,7 @@ import { styles } from "../styles";
 import deleteTrip from "../components/DeleteTrip";
 import formatDate from "../components/NicelyFormattedDate";
 
-const TripsScreen = () => {
+const TripsScreen = ({ navigation }) => {
     const [trips, setTrips] = useState([])
     const [selectedTrip, setSelectedTrip] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
@@ -22,8 +22,7 @@ const TripsScreen = () => {
     }, [])
 
     const openTripDetails = (trip) => {
-        setSelectedTrip(trip)
-        setModalVisible(true)
+        navigation.navigate('TripDetails', { passengers: trip.passengers })
     }
 
     const closeTripDetails = () => {

@@ -101,6 +101,7 @@ export const styles = StyleSheet.create({
   },
   passengerItem: {
     marginTop: 16,
+    alignItems: 'center',
   },
   rowContainer: {
     flexDirection: 'row',
