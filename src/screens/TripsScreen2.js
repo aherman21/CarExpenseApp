@@ -4,6 +4,7 @@ import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
 import deleteTrip from "../components/deleteTrip";
+import formatDate from "../components/nicelyFormattedDate";
 
 const TripsScreen = () => {
     const [trips, setTrips] = useState([])
@@ -34,7 +35,7 @@ const TripsScreen = () => {
             <TouchableOpacity
                 onPress={() => openTripDetails(item)}
             >
-                <Text style={styles.tripText}>Date: {item.date}</Text>
+                <Text style={styles.tripText}>Date: {formatDate(item.date)}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => removeTrip(index)} style={styles.removeButton}>
                 <Text>Delete</Text>
