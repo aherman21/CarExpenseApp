@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, FlatList, Text, TouchableOpacity, Alert, Image, Modal } from 'react-native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
-import saveTripData from '../components/saveTripData';
+import saveTripData from '../components/SaveTripData';
 
 const MainScreen = () => {
     const [modalVisible, setModalVisible] = useState(false)

@@ -3,19 +3,20 @@ import { View, FlatList, Text, TouchableOpacity, Modal, Button} from 'react-nati
 import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
-import clearTrips from "../components/clearTrips";
+import deleteTrip from "../components/deleteTrip";
 
 const TripsScreen = () => {
     const [trips, setTrips] = useState([])
     const [selectedTrip, setSelectedTrip] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    console.log('trips:', trips)
+
+    const fetchTrips = async () => {
+        const loadedTrips = await loadTrips()
+        setTrips(loadedTrips)
+    }
 
     useEffect(() => {
-        const fetchTrips = async () => {
-            const loadedTrips = await loadTrips()
-            setTrips(loadedTrips)
-        }
-
         fetchTrips()
     }, [])
 
@@ -35,16 +36,21 @@ const TripsScreen = () => {
             >
                 <Text style={styles.tripText}>Date: {item.date}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => deleteTrip(index)} style={styles.removeButton}>
+            <TouchableOpacity onPress={() => removeTrip(index)} style={styles.removeButton}>
                 <Text>Delete</Text>
             </TouchableOpacity>
         </View>
     )
 
-    const deleteTrip = async (index) => {
-        const newTrips = [...trips]
-        newTrips.splice(index, 1)
-        setTrips(newTrips)
+    const removeTrip = async (index) => {
+        console.log('index:', index)
+        const success = await deleteTrip(trips[index].date)
+        if (success) {
+            await fetchTrips()
+            console.log('success deleting trip')
+            const updatedTrips = trips.filter((trip) => trip.date !== trips[index].date)
+            setTrips([...updatedTrips])
+        }
     }
 
     return (
@@ -52,7 +58,8 @@ const TripsScreen = () => {
             <FlatList
                 data={trips}
                 renderItem={renderTripItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.date}
+                extraData={trips}
             />
         {/*modal to show single trips details*/}
             <Modal
