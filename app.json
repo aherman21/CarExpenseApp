@@ -7,7 +7,7 @@
     "icon": "./src/icons/noun-money-from-car-3096761.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/icons/noun-money-from-car-3096761.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
