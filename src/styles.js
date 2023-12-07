@@ -19,9 +19,19 @@ export const styles = StyleSheet.create({
     fontSize: 18,
   },
   addButton: {
-    backgroundColor: '#0000FF',
+    backgroundColor: '#abf500',
     borderRadius: 20,
     padding: 10,
+  },
+  endButton: {
+    backgroundColor: '#fef200',
+    borderRadius: 20,
+    padding: 10,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+
   },
   addButtonText: {
     color: '#fff',
@@ -46,6 +56,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginTop: 10,
   },
+  endButtonContainer: {
+    marginBottom: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   removeButton: {
     backgroundColor: 'red',
     borderRadius: 10,
@@ -55,6 +70,11 @@ export const styles = StyleSheet.create({
   removeButtonText: {
     color: '#fff',
     fontSize: 14,
+  },
+  buttonImage: {
+    width: 20,
+    height: 20,
+    marginLeft: 17,
   },
   editButtonText: {
     color: '#000',
@@ -78,6 +98,9 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FFA500'
   },
+  passengerItem: {
+    marginTop: 16,
+  },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -92,4 +115,21 @@ export const styles = StyleSheet.create({
     flex: 0,
     textAlign: 'right', // Align text to the right
   },
+  modalView: {
+    height: 300,
+    width: 200,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    backgroundColor: 'grey'
+  },
+  tripItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  tripText: {
+    fontSize: 18,
+  }
 });
