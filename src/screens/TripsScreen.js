@@ -4,7 +4,7 @@ import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
 import deleteTrip from "../components/DeleteTrip";
-import formatDate from "../components/NicelyFormattedDate";
+import formatDate from "..components/NicelyFormattedDate"
 
 const TripsScreen = ({ navigation }) => {
     const [trips, setTrips] = useState([])
@@ -16,7 +16,7 @@ const TripsScreen = ({ navigation }) => {
         const loadedTrips = await loadTrips()
         setTrips(loadedTrips)
     }
-
+    
     useEffect(() => {
         fetchTrips()
     }, [])
