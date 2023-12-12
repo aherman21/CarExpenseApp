@@ -3,8 +3,8 @@ import { View, FlatList, Text, TouchableOpacity, Modal, Button, Alert} from 'rea
 import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
-import deleteTrip from "../components/deleteTrip";
-import formatDate from "../components/nicelyFormattedDate";
+import deleteTrip from "../components/DeleteTrip";
+import formatDate from "../components/NicelyFormattedDate";
 
 const TripsScreen = ({ navigation }) => {
     const [trips, setTrips] = useState([])
