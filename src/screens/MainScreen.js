@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, FlatList, Text, TouchableOpacity, Alert, Image, Modal } from 'react-native';
+import { View, TextInput, Button, FlatList, Text, TouchableOpacity, Alert, Image, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
 import saveTripData from '../components/SaveTripData';
@@ -118,6 +119,10 @@ const MainScreen = () => {
     }
  
   return (
+    <KeyboardAvoidingView
+    style={{ flex: 1 }}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
     <View style={styles.container}>
         <View style={styles.inputContainer}>
             <TextInput
@@ -131,7 +136,7 @@ const MainScreen = () => {
           <Text style={styles.addButtonText}>Add passenger</Text>
         </TouchableOpacity>
 
-        <Text style={styles.listTitle}>Total Money for current trip: {getTotalMoneySpent().toFixed(2)}</Text>
+        
         <FlatList
             data={passengers}
             ListHeaderComponent={<Text style={styles.listTitle}>Passengers</Text>}
@@ -143,6 +148,8 @@ const MainScreen = () => {
                 <Text style={styles.text}>End Trip</Text>
                 <Image style={styles.buttonImage} source={require("../icons/noun-checkered-flag-38703.png")}/>
             </TouchableOpacity>
+            
+            
             <Modal
              animationType='slide'
              transparent={true}
@@ -154,9 +161,13 @@ const MainScreen = () => {
                     <Text style={styles.closeMainButtonText}>Close</Text>
                 </TouchableOpacity>
              </View>
+             
             </Modal>
+            
         </View>
+        <Text style={styles.listTitle}>Total Money for current trip: {getTotalMoneySpent().toFixed(2)}</Text>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
