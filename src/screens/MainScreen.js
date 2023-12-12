@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { View, TextInput, Button, FlatList, Text, TouchableOpacity, Alert, Image, Modal } from 'react-native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
@@ -8,6 +9,7 @@ const MainScreen = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [passengerName, setPassengerName] = useState('');
     const [passengers, setPassengers] = useState([]);
+    const route = useRoute();
 
   const addPassenger = () => {
     if (passengerName.trim() === '') {
@@ -25,6 +27,17 @@ const MainScreen = () => {
     setPassengers([...passengers, newPassenger]);
     setPassengerName('');
   };
+
+
+
+  useEffect(() => {
+    if (route.params?.previousTrip) {
+      console.log(route.params?.previousTrip.passengers)
+     setPassengers([...route.params.previousTrip.passengers])
+    }
+  }, [route.params?.previousTrip]);
+
+  
 
   const toggleOnboard = (index) => {
     const updatedPassengers = [...passengers];

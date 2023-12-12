@@ -5,12 +5,14 @@ import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
 import deleteTrip from "../components/DeleteTrip";
 import formatDate from "../components/NicelyFormattedDate";
+import { useNavigation } from '@react-navigation/native';
+
 
 const TripsScreen = () => {
     const [trips, setTrips] = useState([])
     const [selectedTrip, setSelectedTrip] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
-    console.log('trips:', trips)
+    const navigation = useNavigation();
 
     const fetchTrips = async () => {
         const loadedTrips = await loadTrips()
@@ -44,8 +46,20 @@ const TripsScreen = () => {
           >
             <Text>Delete</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => forwardTripToMainscreen(index)}
+            style={  styles.removeButton}
+          >
+            <Text>Load</Text>
+          </TouchableOpacity>
         </View>
       );
+
+      function forwardTripToMainscreen(index) {
+        console.log('Navigating to Main with:', trips[index]);
+        navigation.navigate('Main', { previousTrip: trips[index] });
+    }
       
       const showDeleteConfirmation = (index) => {
         Alert.alert(
