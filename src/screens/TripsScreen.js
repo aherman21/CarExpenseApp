@@ -41,7 +41,7 @@ const TripsScreen = ({ navigation }) => {
             onPress={() => showDeleteConfirmation(index)}
             style={styles.removeButton}
           >
-            <Text>Delete</Text>
+            <Text style = {styles.removeButtonText}>Delete</Text>
           </TouchableOpacity>
         </View>
       );

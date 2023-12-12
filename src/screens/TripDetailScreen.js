@@ -10,15 +10,20 @@ const TripDetailScreen = ({ route }) => {
         <View style={styles.container}>
         {/* Render passenger details */}
         {passengers.map((passenger, index) => (
-            <View key={index} style={styles.passengerItem}>
-                <Text>Name: {passenger.name}</Text>
-                <Text>Time Elapsed: {passenger.timeElapsed}</Text>
-                <Text>Money Owed: {passenger.moneySpent.toFixed(2)} €</Text>
-            </View>
+          <View key={index} style={styles.passengerItem}>
+            <Text style={styles.passengerName}>Name: {passenger.name}</Text>
+            <Text style={styles.passengerInfo}>
+              Time Elapsed: {passenger.timeElapsed}
+            </Text>
+            <Text style={styles.passengerInfo}>
+              Money Owed: {passenger.moneySpent.toFixed(2)} €
+            </Text>
+          </View>
         ))}
-        </View>
+      </View>
     );
-    }
+  };
+
 
 
 export default TripDetailScreen
