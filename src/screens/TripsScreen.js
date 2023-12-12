@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Text, TouchableOpacity, Modal, Button, Alert} from 'react-native'
+import { View, FlatList, Text, TouchableOpacity, Button, Alert} from 'react-native'
 import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
@@ -10,8 +10,7 @@ import formatDate from "../components/NicelyFormattedDate"
 const TripsScreen = ({ navigation }) => {
     const [trips, setTrips] = useState([])
     const [selectedTrip, setSelectedTrip] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
-    (console.log('trips:', trips))
+    console.log('trips:', trips)
 
 
     const fetchTrips = async () => {
@@ -46,19 +45,8 @@ const TripsScreen = ({ navigation }) => {
             <Text style = {styles.removeButtonText}>Delete</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => forwardTripToMainscreen(index)}
-            style={  styles.removeButton}
-          >
-            <Text>Load</Text>
-          </TouchableOpacity>
         </View>
       );
-
-      function forwardTripToMainscreen(index) {
-        console.log('Navigating to Main with:', trips[index]);
-        navigation.navigate('Main', { previousTrip: trips[index] });
-    }
       
       const showDeleteConfirmation = (index) => {
         Alert.alert(
@@ -92,20 +80,6 @@ const TripsScreen = ({ navigation }) => {
                 keyExtractor={(item) => item.date}
                 extraData={trips}
             />
-        {/*modal to show single trips details*/}
-            <Modal
-                animationType='slide'
-                transparent={false}
-                visible={modalVisible}
-                onRequestClose={closeTripDetails}
-            >
-                <View style={styles.modalView}>
-                    {selectedTrip && <ShowTrip passengers={selectedTrip.passengers} />}
-                    <TouchableOpacity onPress={closeTripDetails} style={styles.closeButton}>
-                        <Text  style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
         </View>
     )
 }
