@@ -8,7 +8,7 @@ import formatDate from "../components/NicelyFormattedDate";
 import { useNavigation } from '@react-navigation/native';
 
 
-const TripsScreen = () => {
+const TripsScreen = ({ navigation }) => {
     const [trips, setTrips] = useState([])
     const [selectedTrip, setSelectedTrip] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
@@ -18,14 +18,13 @@ const TripsScreen = () => {
         const loadedTrips = await loadTrips()
         setTrips(loadedTrips)
     }
-
+    
     useEffect(() => {
         fetchTrips()
     }, [])
 
     const openTripDetails = (trip) => {
-        setSelectedTrip(trip)
-        setModalVisible(true)
+        navigation.navigate('TripDetails', { passengers: trip.passengers })
     }
 
     const closeTripDetails = () => {
@@ -44,7 +43,7 @@ const TripsScreen = () => {
             onPress={() => showDeleteConfirmation(index)}
             style={styles.removeButton}
           >
-            <Text>Delete</Text>
+            <Text style = {styles.removeButtonText}>Delete</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

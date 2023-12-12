@@ -62,16 +62,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  removeButton: {
-    backgroundColor: '#ccc',
-    borderRadius: 10,
-    padding: 5,
-    alignSelf: 'flex-end',
-  },
-  removeButtonText: {
-    color: '#fff',
-    fontSize: 14,
-  },
   buttonImage: {
     width: 20,
     height: 20,
@@ -87,8 +77,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 10,
-    backgroundColor: '#ddd',
   },
+
   passengerButton: {
     fontSize: 15,
     padding: 10,
@@ -101,20 +91,21 @@ export const styles = StyleSheet.create({
   },
   passengerItem: {
     marginTop: 16,
+    alignItems: 'center',
   },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // This ensures vertical alignment
-    padding: 10, // Adjust the padding as needed
+    alignItems: 'center', 
+    padding: 10, 
   },
   leftText: {
     flex: 1,
-    textAlign: 'left', // Align text to the left
+    textAlign: 'left', 
   },
   rightText: {
     flex: 0,
-    textAlign: 'right', // Align text to the right
+    textAlign: 'right', 
   },
   modalView: {
     height: 300,
@@ -155,11 +146,62 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   tripItem: {
-    padding: 15,
+    padding: 10,
+    marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: 'black',
+    backgroundColor: "#78C5EF",
+    flexDirection: 'row', // Arrange items horizontally
+    justifyContent: 'space-between', // Align items at each end
+    alignItems: 'center', // Center items vertically
+    paddingHorizontal: 16, // Add some horizontal padding
+    borderRadius: 8, // Add border radius for a rounded appearance
   },
+  
+  removeButton: {
+    backgroundColor: "#E74C3C", // Use a different color for the button
+    paddingVertical: 8, // Adjust vertical padding
+    paddingHorizontal: 12, // Adjust horizontal padding
+    borderRadius: 6, // Add border radius for a rounded appearance
+  },
+  
+  removeButtonText: {
+    color: "#FFFFFF", // Text color for the button
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
   tripText: {
     fontSize: 18,
-  }
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#EFEFEF',
+  },
+  passengerItem: {
+    marginBottom: 16,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  passengerName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333333',
+  },
+  passengerInfo: {
+    fontSize: 16,
+    marginBottom: 4,
+    color: '#666666', // Slightly lighter gray text color
+  },
 });
