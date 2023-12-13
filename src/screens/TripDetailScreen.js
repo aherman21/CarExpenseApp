@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "../styles";
-
-
+import { getTotalMoneySpent } from "../components/GetTotalMoneySpent";
 
 const TripDetailScreen = ({ route, navigation }) => {
     const { passengers } = route.params;
@@ -10,7 +9,12 @@ const TripDetailScreen = ({ route, navigation }) => {
     function forwardTrip(passengers) {
       console.log('forwarding passengers:', passengers)
       navigation.navigate('Home', { passengers: passengers })
-  }
+    }
+
+    const getTotalMoneySpent = () => {
+      return passengers.reduce((total, passenger) => total + passenger.moneySpent, 0)
+      }
+
     
     return (
         <View style={styles.container}>
@@ -26,6 +30,8 @@ const TripDetailScreen = ({ route, navigation }) => {
             </Text>
           </View>
         ))}
+        <Text style={styles.listTitle}>Total Money Spent: {getTotalMoneySpent().toFixed(2)} €</Text>
+        {/* Button to forward passengers to next trip */}
         <TouchableOpacity style={styles.tripItem} onPress={() => forwardTrip(passengers)}>
               <Text style={styles.passengerName}>Set these Passengers to your next trip</Text>
         </TouchableOpacity>

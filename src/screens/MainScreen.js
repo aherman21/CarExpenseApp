@@ -5,6 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
 import saveTripData from '../components/SaveTripData';
+import { getTotalMoneySpent } from '../components/GetTotalMoneySpent';
 
 const MainScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false)
