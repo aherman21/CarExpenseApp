@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, Text, TouchableOpacity, Button, Alert} from 'react-native'
-import ShowTrip from "../components/ShowTrip";
 import loadTrips from "../components/LoadTrips";
 import { styles } from "../styles";
 import deleteTrip from "../components/DeleteTrip";
