@@ -15,7 +15,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Main">
         <Stack.Screen 
-          name="Main" 
+          name="Home" 
           component={MainScreen}
           options={({ navigation }) => ({
             headerRight: () => (

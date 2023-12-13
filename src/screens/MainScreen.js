@@ -96,6 +96,10 @@ const MainScreen = () => {
   }
 
     const endTrip = () => {
+      if (passengers.length == 0) {
+        alert('No trip ongoing to close')
+        return
+      }
         Alert.alert(
             'End Trip',
             'Are you sure you want to end the trip',
@@ -133,6 +137,7 @@ const MainScreen = () => {
     }
 
     const closeTripDetails = () => {
+
         setModalVisible(false)
         //reset passengers for next trip
         setPassengers([])
