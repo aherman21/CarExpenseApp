@@ -1,14 +1,22 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { styles } from "../styles";
-import { getTotalMoneySpent } from "../components/GetTotalMoneySpent";
+
 
 const TripDetailScreen = ({ route, navigation }) => {
     const { passengers } = route.params;
 
     function forwardTrip(passengers) {
-      console.log('forwarding passengers:', passengers)
-      navigation.navigate('Home', { passengers: passengers })
+      // alert that this might override existing passengers in home screen
+      Alert.alert(
+        'Are you sure you want to set these passengers to your next trip?',
+        'This will override the ongoing trip if there is one.',
+        [
+          { text: 'Cancel'},
+          { text: 'Do it!', onPress: () => navigation.navigate('Home', { passengers: passengers }) }
+        ],
+        { cancelable: true }
+      );
     }
 
     const getTotalMoneySpent = () => {

@@ -205,4 +205,7 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
     color: '#666666', // Slightly lighter gray text color
   },
+  bolded: {
+    fontWeight: 'bold',
+  }
 });

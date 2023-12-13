@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
 import saveTripData from '../components/SaveTripData';
-import { getTotalMoneySpent } from '../components/GetTotalMoneySpent';
+
 
 const MainScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false)
@@ -95,12 +95,12 @@ const MainScreen = ({ navigation, route }) => {
       style={ [styles.passengerButton, { backgroundColor: item.onboard ? 'green' : 'white' }]}>
         <View style={styles.rowContainer}>
             <View style={styles.leftText}>
-                <Text>{item.name}</Text>
+                <Text style={styles.bolded}>{item.name}</Text>
                 <Text>{item.onboard ? 'onboard' : 'not onboard'}</Text>
             </View>
             <View style={styles.rightText}>
-                <Text>Time: {item.timeElapsed}</Text>
-                <Text>Money owed: {item.moneySpent.toFixed(2)}</Text>
+                <Text style={styles.bolded}>Money owed: {item.moneySpent.toFixed(2)} €</Text>
+                <Text>Time: {item.timeElapsed} seconds</Text>
             </View>
       
       

@@ -35,6 +35,7 @@ const TripsScreen = ({ navigation }) => {
             onPress={() => openTripDetails(item)}
           >
             <Text style={styles.tripText}>Date: {formatDate(item.date)}</Text>
+            <Text style={styles.passengerInfo}>Total Money Spent: {item.totalMoneySpent.toFixed(2)} €</Text>
           </TouchableOpacity>
       
           <TouchableOpacity
