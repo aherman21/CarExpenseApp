@@ -1,10 +1,16 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "../styles";
 
 
-const TripDetailScreen = ({ route }) => {
+
+const TripDetailScreen = ({ route, navigation }) => {
     const { passengers } = route.params;
+
+    function forwardTrip(passengers) {
+      console.log('forwarding passengers:', passengers)
+      navigation.navigate('Home', { passengers: passengers })
+  }
     
     return (
         <View style={styles.container}>
@@ -20,6 +26,9 @@ const TripDetailScreen = ({ route }) => {
             </Text>
           </View>
         ))}
+        <TouchableOpacity style={styles.tripItem} onPress={() => forwardTrip(passengers)}>
+              <Text style={styles.passengerName}>Set these Passengers to your next trip</Text>
+        </TouchableOpacity>
       </View>
     );
   };

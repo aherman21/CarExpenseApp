@@ -1,14 +1,34 @@
 
 import React, { useState } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, Alert, Image, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
 import saveTripData from '../components/SaveTripData';
 
-const MainScreen = () => {
+const MainScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [passengerName, setPassengerName] = useState('');
     const [passengers, setPassengers] = useState([]);
+
+  // this is for getting passengers from TripDetailScreen
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.passengers) {
+        const newPassengers = route.params.passengers.map(passenger => ({
+          //resetting all the data for the passengers
+          ...passenger,
+          onboard: false,
+          timerId: null,
+          moneySpent: 0,
+          timeElapsed: 0
+        }))
+        setPassengers(newPassengers)
+        // Reset the params after reading them
+        navigation.setParams({ passengers: undefined })
+      }
+    }, [route.params?.passengers])
+  )
 
   const addPassenger = () => {
     if (passengers.length >= 5) {
