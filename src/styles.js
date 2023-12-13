@@ -108,8 +108,9 @@ export const styles = StyleSheet.create({
     textAlign: 'right', 
   },
   modalView: {
-    height: 300,
+    height: 500,
     width: 200,
+    backgroundColor: "#EFEFEF",
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 6,

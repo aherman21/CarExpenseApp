@@ -11,11 +11,31 @@ const MainScreen = () => {
     const [passengers, setPassengers] = useState([]);
 
   const addPassenger = () => {
+    if (passengers.length >= 5) {
+        alert('Maximum number of passengers reached. Cannot add more.')
+        return
+    }
     if (passengerName.trim() === '') {
         // Provide feedback to the user. For example, you can use an alert:
         alert('Please enter a passenger name.');
         return; // Exit the function if the name is not provided
     }
+
+    let wasRideStopped = false
+
+    const updatedPassengers = passengers.map(passenger => {
+        if (passenger.onboard) {
+            clearInterval(passenger.timerId)
+            wasRideStopped = true
+            return { ...passenger, onboard: false, timerId: null }
+        }
+        return passenger
+    })
+
+    if (wasRideStopped) {
+        alert('Ride was stopped for passenger ' + passengerName)
+    }
+
     const newPassenger = {
       name: passengerName,
       onboard: false,
@@ -23,7 +43,7 @@ const MainScreen = () => {
       moneySpent: 0,
       timerId: null
     };
-    setPassengers([...passengers, newPassenger]);
+    setPassengers([...updatedPassengers, newPassenger]);
     setPassengerName('');
   };
   
