@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
   addButton: {
     backgroundColor: '#007bff', // Change to the desired shade of blue
     borderRadius: 20, // Adjust the value to control the roundness of the edges
+    height: 40, // Specify the height of the button
     padding: 10,
     width: "50%",
     alignSelf: 'center',
@@ -73,7 +74,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   listTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 10,

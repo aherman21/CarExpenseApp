@@ -11,6 +11,7 @@ const MainScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [passengerName, setPassengerName] = useState('');
     const [passengers, setPassengers] = useState([]);
+    const [fare, setFare] = useState('0.05');
 
   // this is for getting passengers from TripDetailScreen
   useFocusEffect(
@@ -30,7 +31,25 @@ const MainScreen = ({ navigation, route }) => {
       }
     }, [route.params?.passengers])
   )
+  // getting money per second from SetFareScreen
+  useFocusEffect(
+    React.useCallback(() => {
+        if (route.params?.fare) {
+            // set passengers offboard
+            const updatedPassengers = passengers.map(passenger => ({
+                ...passenger,
+                onboard: false,
+                timerId: passenger.onboard ? clearInterval(passenger.timerId) : passenger.timerId
+            }))
+            setPassengers(updatedPassengers)
+            setFare(route.params.fare);
+            // Reset the param to avoid re-setting on re-focus
+            navigation.setParams({ fare: undefined });
+        }
+    }, [route.params?.fare])
+  )
 
+  //add passenger to flatlist
   const addPassenger = () => {
     if (passengers.length >= 5) {
         alert('Maximum number of passengers reached. Cannot add more.')
@@ -40,7 +59,9 @@ const MainScreen = ({ navigation, route }) => {
         // Provide feedback to the user. For example, you can use an alert:
         alert('Please enter a passenger name.');
         return; // Exit the function if the name is not provided
-    }
+    
+  }
+  
 
     let wasRideStopped = false
 
@@ -77,7 +98,7 @@ const MainScreen = ({ navigation, route }) => {
       passenger.onboard = true
       passenger.timerId = setInterval(() => {
         passenger.timeElapsed++
-        passenger.moneySpent += 0.05
+        passenger.moneySpent += parseFloat(fare)
         setPassengers([...updatedPassengers])
       }, 1000)
     } else {
@@ -177,12 +198,9 @@ const MainScreen = ({ navigation, route }) => {
             placeholder="Enter Passenger Name"
         />
         </View>
-      
         <TouchableOpacity onPress={addPassenger} style={styles.addButton}>
           <Text style={styles.addButtonText}>Add passenger</Text>
-        </TouchableOpacity>
-
-        
+        </TouchableOpacity>        
         <FlatList
             data={passengers}
             ListHeaderComponent={<Text style={styles.listTitle}>Passengers</Text>}
@@ -211,10 +229,10 @@ const MainScreen = ({ navigation, route }) => {
             </Modal>
             
         </View>
-        <Text style={styles.listTitle}>Total Money for current trip: {getTotalMoneySpent().toFixed(2)}</Text>
+        <Text style={styles.listTitle}>Fare/person/second {fare} €</Text>
+        <Text style={styles.listTitle}>Total Money for current trip: {getTotalMoneySpent().toFixed(2)} €</Text>
     </View>
     </KeyboardAvoidingView>
   );
 };
-
 export default MainScreen;
