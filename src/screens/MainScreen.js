@@ -5,13 +5,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { styles } from '../styles'
 import ShowTrip from '../components/ShowTrip';
 import saveTripData from '../components/SaveTripData';
+import { useFare, FareContext } from '../context/fareContext';
 
 
 const MainScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [passengerName, setPassengerName] = useState('');
     const [passengers, setPassengers] = useState([]);
-    const [fare, setFare] = useState('0.05');
+    const { fare } = useFare()
 
   // this is for getting passengers from TripDetailScreen
   useFocusEffect(
@@ -42,7 +43,6 @@ const MainScreen = ({ navigation, route }) => {
                 timerId: passenger.onboard ? clearInterval(passenger.timerId) : passenger.timerId
             }))
             setPassengers(updatedPassengers)
-            setFare(route.params.fare);
             // Reset the param to avoid re-setting on re-focus
             navigation.setParams({ fare: undefined });
         }

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Keyboard } from 'react-native';
 import { styles } from '../styles';
+import { useFare } from '../context/fareContext';
 
 const SetFareScreen = ({ navigation, route }) => {
-    const [fareAmount, setFareAmount] = useState(route.params?.fareAmount.toString());
+    const { fare, setFare } = useFare()
+    const [fareAmount, setFareAmount] = useState(fare);
+    console.log(fareAmount)
 
     const handleFareChange = (text) => {
         if (text === '') {
@@ -23,6 +26,7 @@ const SetFareScreen = ({ navigation, route }) => {
             return;
         }
         Keyboard.dismiss();
+        setFare(fareValue)
         navigation.navigate('Home', { fare: fareValue });
     };
 
@@ -30,9 +34,9 @@ const SetFareScreen = ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={styles.inputContainer}>
                 <TextInput
-                    value={fareAmount}
+                    value={fareAmount.toString()}
                     onChangeText={handleFareChange}
-                    placeholder="Enter Money/second"
+                    placeholder={fareAmount.toString()}
                     keyboardType="numeric"
                 />
             </View>
